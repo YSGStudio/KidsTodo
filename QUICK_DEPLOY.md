@@ -79,3 +79,5 @@ DATABASE_URL="your-postgres-url" npx prisma migrate deploy
 - **데이터베이스 연결 오류**: `DATABASE_URL` 형식 확인
 - **Prisma 오류**: `postinstall` 스크립트가 `package.json`에 있는지 확인
 
+
+

@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { format, startOfDay, endOfDay } from 'date-fns'
 
+export const dynamic = 'force-dynamic'
+
 // 일일 투두리스트 조회 및 생성
 export async function GET(request: NextRequest) {
   try {

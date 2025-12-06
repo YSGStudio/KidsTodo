@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { startOfDay, endOfDay } from 'date-fns'
 
+export const dynamic = 'force-dynamic'
+
 // 랜덤 열매 타입들
 const FRUIT_TYPES = ['apple', 'banana', 'grape', 'orange', 'strawberry', 'watermelon']
 

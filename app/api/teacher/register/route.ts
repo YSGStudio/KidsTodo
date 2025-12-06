@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { registerTeacher } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 
+export const dynamic = 'force-dynamic'
+
 export async function POST(request: NextRequest) {
   try {
     const { name, email, password } = await request.json()

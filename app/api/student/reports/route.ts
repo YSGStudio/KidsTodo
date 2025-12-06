@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { startOfMonth, endOfMonth, format } from 'date-fns'
 
+export const dynamic = 'force-dynamic'
+
 // 월별 레포트 조회 및 생성
 export async function GET(request: NextRequest) {
   try {

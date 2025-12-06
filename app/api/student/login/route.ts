@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { loginStudent } from '@/lib/auth'
 
+export const dynamic = 'force-dynamic'
+
 export async function POST(request: NextRequest) {
   try {
     const { studentCode, password } = await request.json()

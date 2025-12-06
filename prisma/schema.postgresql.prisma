@@ -1,0 +1,92 @@
+// PostgreSQL용 스키마 (배포 시 사용)
+// 사용법: 이 파일을 schema.prisma로 복사하거나 이름 변경
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// 교사 모델
+model Teacher {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  students  Student[]
+}
+
+// 학생 모델
+model Student {
+  id           String      @id @default(cuid())
+  teacherId    String
+  teacher      Teacher     @relation(fields: [teacherId], references: [id], onDelete: Cascade)
+  name         String
+  studentCode  String      @unique // 학생 로그인용 코드
+  password     String
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  plans        Plan[]      // 기본 계획들
+  todos        Todo[]      // 일일 투두리스트
+  fruits       Fruit[]     // 보유한 열매들
+  reports      MonthlyReport[]
+}
+
+// 기본 계획 모델 (학생이 환경설정에서 등록)
+model Plan {
+  id        String   @id @default(cuid())
+  studentId String
+  student   Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  title     String   // 계획 제목
+  order     Int      // 순서
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// 일일 투두리스트 모델
+model Todo {
+  id        String   @id @default(cuid())
+  studentId String
+  student   Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  planId    String?  // 기본 계획 ID (선택적)
+  title     String   // 투두 제목
+  date      DateTime // 날짜
+  completed Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// 열매 모델
+model Fruit {
+  id        String   @id @default(cuid())
+  studentId String
+  student   Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  type      String   // 열매 타입 (예: "apple", "banana", "grape" 등)
+  count     Int      @default(1) // 개수
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// 월별 레포트 모델
+model MonthlyReport {
+  id           String   @id @default(cuid())
+  studentId    String
+  student      Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  year         Int
+  month        Int
+  totalTodos   Int      // 총 투두 개수
+  completedTodos Int    // 완료한 투두 개수
+  completionRate Float  // 완료율
+  wellDone     String @default("[]") // 잘 실천한 것들 (JSON 배열 문자열)
+  needsImprovement String @default("[]") // 개선이 필요한 것들 (JSON 배열 문자열)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@unique([studentId, year, month])
+}
+

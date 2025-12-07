@@ -225,13 +225,14 @@ export default function TeacherDashboard() {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {students.map((student) => (
-                <div
+                <Link
                   key={student.id}
-                  className="p-4 bg-gray-50 rounded-lg border border-gray-200 relative hover:shadow-md transition-shadow cursor-pointer group"
-                  onClick={() => router.push(`/teacher/students/${student.id}/stats`)}
+                  href={`/teacher/students/${student.id}/stats`}
+                  className="p-4 bg-gray-50 rounded-lg border border-gray-200 relative hover:shadow-md transition-shadow cursor-pointer group block"
                 >
                   <button
                     onClick={(e) => {
+                      e.preventDefault()
                       e.stopPropagation()
                       handleDeleteStudent(student.id, student.name)
                     }}
@@ -264,7 +265,7 @@ export default function TeacherDashboard() {
                       클릭하여 통계 보기 →
                     </p>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           )}

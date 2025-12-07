@@ -5,7 +5,7 @@ export default function Home() {
     <main className="min-h-screen bg-gradient-to-br from-primary-50 to-primary-100 flex items-center justify-center p-4">
       <div className="card max-w-md w-full text-center">
         <h1 className="text-4xl font-bold text-primary-700 mb-2">
-          🌱 성장열매 투두리스트
+          🌱 성장열매 Todo리스트
         </h1>
         <p className="text-gray-600 mb-8">
           매일 계획을 실천하고 열매를 모아보세요!

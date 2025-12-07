@@ -84,6 +84,34 @@ export default function TeacherDashboard() {
     }
   }
 
+  const handleDeleteStudent = async (studentId: string, studentName: string) => {
+    if (!confirm(`${studentName} 학생을 정말 삭제하시겠습니까?\n\n삭제하면 해당 학생의 모든 데이터(계획, 투두리스트, 열매, 레포트)도 함께 삭제됩니다.`)) {
+      return
+    }
+
+    try {
+      const teacherId = localStorage.getItem('teacherId')
+      const res = await fetch('/api/teacher/students', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          teacherId,
+          studentId,
+        }),
+      })
+
+      const data = await res.json()
+
+      if (res.ok) {
+        fetchStudents()
+      } else {
+        alert(data.error || '학생 삭제에 실패했습니다.')
+      }
+    } catch (err) {
+      alert('학생 삭제 중 오류가 발생했습니다.')
+    }
+  }
+
   const handleLogout = () => {
     localStorage.removeItem('teacherId')
     localStorage.removeItem('teacherName')
@@ -199,9 +227,29 @@ export default function TeacherDashboard() {
               {students.map((student) => (
                 <div
                   key={student.id}
-                  className="p-4 bg-gray-50 rounded-lg border border-gray-200"
+                  className="p-4 bg-gray-50 rounded-lg border border-gray-200 relative hover:shadow-md transition-shadow"
                 >
-                  <h3 className="font-bold text-lg text-gray-800">
+                  <button
+                    onClick={() => handleDeleteStudent(student.id, student.name)}
+                    className="absolute top-2 right-2 p-1.5 text-gray-400 hover:text-red-600 transition-colors rounded-full hover:bg-red-50"
+                    title="학생 삭제"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-5 w-5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                      />
+                    </svg>
+                  </button>
+                  <h3 className="font-bold text-lg text-gray-800 pr-8">
                     {student.name}
                   </h3>
                   <p className="text-sm text-gray-600 mt-1">

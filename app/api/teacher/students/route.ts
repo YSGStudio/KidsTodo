@@ -85,3 +85,42 @@ export async function POST(request: NextRequest) {
   }
 }
 
+// 학생 삭제
+export async function DELETE(request: NextRequest) {
+  try {
+    const { teacherId, studentId } = await request.json()
+
+    if (!teacherId || !studentId) {
+      return NextResponse.json(
+        { error: '교사 ID와 학생 ID가 필요합니다.' },
+        { status: 400 }
+      )
+    }
+
+    // 해당 교사의 학생인지 확인
+    const student = await prisma.student.findUnique({
+      where: { id: studentId },
+    })
+
+    if (!student || student.teacherId !== teacherId) {
+      return NextResponse.json(
+        { error: '학생을 찾을 수 없거나 권한이 없습니다.' },
+        { status: 404 }
+      )
+    }
+
+    // 학생 삭제 (CASCADE로 관련 데이터도 자동 삭제됨)
+    await prisma.student.delete({
+      where: { id: studentId },
+    })
+
+    return NextResponse.json({ success: true })
+  } catch (error) {
+    console.error('Delete student error:', error)
+    return NextResponse.json(
+      { error: '학생 삭제 중 오류가 발생했습니다.' },
+      { status: 500 }
+    )
+  }
+}
+

@@ -227,11 +227,15 @@ export default function TeacherDashboard() {
               {students.map((student) => (
                 <div
                   key={student.id}
-                  className="p-4 bg-gray-50 rounded-lg border border-gray-200 relative hover:shadow-md transition-shadow"
+                  className="p-4 bg-gray-50 rounded-lg border border-gray-200 relative hover:shadow-md transition-shadow cursor-pointer group"
+                  onClick={() => router.push(`/teacher/students/${student.id}/stats`)}
                 >
                   <button
-                    onClick={() => handleDeleteStudent(student.id, student.name)}
-                    className="absolute top-2 right-2 p-1.5 text-gray-400 hover:text-red-600 transition-colors rounded-full hover:bg-red-50"
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      handleDeleteStudent(student.id, student.name)
+                    }}
+                    className="absolute top-2 right-2 p-1.5 text-gray-400 hover:text-red-600 transition-colors rounded-full hover:bg-red-50 z-10"
                     title="학생 삭제"
                   >
                     <svg
@@ -249,12 +253,17 @@ export default function TeacherDashboard() {
                       />
                     </svg>
                   </button>
-                  <h3 className="font-bold text-lg text-gray-800 pr-8">
-                    {student.name}
-                  </h3>
-                  <p className="text-sm text-gray-600 mt-1">
-                    코드: {student.studentCode}
-                  </p>
+                  <div className="pr-8">
+                    <h3 className="font-bold text-lg text-gray-800 group-hover:text-primary-600 transition-colors">
+                      {student.name}
+                    </h3>
+                    <p className="text-sm text-gray-600 mt-1">
+                      코드: {student.studentCode}
+                    </p>
+                    <p className="text-xs text-primary-600 mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                      클릭하여 통계 보기 →
+                    </p>
+                  </div>
                 </div>
               ))}
             </div>

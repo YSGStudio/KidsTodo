@@ -49,3 +49,4 @@ node scripts/check-db.js
 2. 로컬 데이터는 개발/테스트용으로 유지
 3. 프로덕션(Vercel)은 새로운 데이터로 시작
 
+

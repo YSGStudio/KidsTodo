@@ -135,3 +135,4 @@ DATABASE_URL="your-url" npx prisma studio
    - `DATABASE_URL`이 올바르게 설정되었는지
    - 연결 문자열 형식이 올바른지
 
+

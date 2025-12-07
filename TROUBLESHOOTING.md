@@ -63,3 +63,4 @@ DATABASE_URL=$(grep DATABASE_URL .env.local | cut -d '=' -f2) npx prisma migrate
 2. Functions 탭 → 로그 확인
 3. 오류 메시지 확인
 
+
